@@ -68,10 +68,17 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
+                export KUBECONFIG=/var/lib/jenkins/.kube/config
+
                 minikube image load my-python-app:latest
 
                 kubectl apply -f k8s/deployment.yaml
                 kubectl apply -f k8s/service.yaml
+
+                kubectl rollout restart deployment/python-app
+
+                kubectl get pods
+
                 '''
             }
         }
