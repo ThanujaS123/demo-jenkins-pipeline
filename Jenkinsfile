@@ -42,8 +42,27 @@ pipeline {
 
                 echo "Building Docker Image"
 
+                sh '''
+                docker build -t my-python-app:latest .
+                '''
+
             }
 
+        }
+
+        stage('Deploy Docker') {
+            steps {
+                echo "Deploying Docker Container"
+
+                sh '''
+                docker rm -f my-python-app || true
+
+                docker run -d \
+                --name my-python-app \
+                -p 5000:5000 \
+                my-python-app:latest
+                '''
+            }
         }
 
     }
