@@ -7,60 +7,27 @@ pipeline {
     stages {
 
         stage('Checkout') {
-
             steps {
-
                 echo "Cloning GitHub Repository"
-
             }
-
         }
 
         stage('Build') {
-
             steps {
-
                 buildApp()
-
             }
-
         }
 
         stage('Test') {
-
             steps {
-
                 testApp()
-
             }
-
         }
 
         stage('Docker Build') {
-
             steps {
-
-                echo "Building Docker Image"
-
                 sh '''
                 docker build -t my-python-app:latest .
-                '''
-
-            }
-
-        }
-
-        stage('Deploy Docker') {
-            steps {
-                echo "Deploying Docker Container"
-
-                sh '''
-                docker rm -f my-python-app || true
-
-                docker run -d \
-                --name my-python-app \
-                -p 5000:5000 \
-                my-python-app:latest
                 '''
             }
         }
@@ -77,12 +44,12 @@ pipeline {
 
                 kubectl rollout restart deployment/python-app
 
-                kubectl get pods
+                kubectl rollout status deployment/python-app
 
+                kubectl get pods
+                kubectl get svc
                 '''
             }
         }
-
     }
-
 }
