@@ -36,11 +36,11 @@ pipeline {
 
         }
 
-        stage('Deploy') {
+        stage('Docker Build') {
 
             steps {
 
-                deployApp()
+                echo "Building Docker Image"
 
             }
 
