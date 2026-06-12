@@ -34,7 +34,9 @@ pipeline {
 
         stage('Load Image to Minikube') {
             steps {
-                sh 'minikube image load my-python-app:latest'
+                sh '''
+                minikube image load my-python-app:latest
+                '''
             }
         }
 
@@ -42,17 +44,17 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                export KUBECONFIG=/var/lib/jenkins/.kube/config
 
 
                 kubectl apply -f k8s/deployment.yaml
                 kubectl apply -f k8s/service.yaml
 
+                kubectl get pods
+                
                 kubectl rollout restart deployment/python-app
 
                 kubectl rollout status deployment/python-app
 
-                kubectl get pods
                 kubectl get svc
                 '''
             }
