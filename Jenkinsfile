@@ -32,6 +32,13 @@ pipeline {
             }
         }
 
+        stage('Load Image to Minikube') {
+            steps {
+                sh 'minikube image load my-python-app:latest'
+            }
+        }
+
+
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
