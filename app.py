@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
+    print("Version 2.0")
     return "Hello from Jenkins Pipeline!!!"
 
 if __name__ == '__main__':
